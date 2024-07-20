@@ -1,0 +1,115 @@
+<h1 *ngIf="currentLetter" class="text-center">Specific Contacts</h1>
+<h1 *ngIf="!currentLetter" class="text-center">All Contacts</h1>
+
+
+<div *ngIf="loading">
+    <img src="assets/loaderImage.gif" alt="loading..." />
+</div>
+
+<div *ngIf="!loading">
+    <div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="input-group m-3 center">
+                <input type="text" [(ngModel)]="searchQuery" class="form-control" (input)="onSearch()"
+                    placeholder="Search contacts">
+                <button class="btn btn-danger" type="button" (click)="clearSearch()"><i
+                        class="fa fa-xmark"></i></button>
+            </div>
+            <a class="btn btn-secondary m-3" [routerLink]="['/add-contact']" routerLinkActive="router-link-active">Add</a>
+            <a class="btn btn-secondary m-3" [routerLink]="['/add-contact-rf']" routerLinkActive="router-link-active">Add RF</a>
+        </div>
+
+        <!-- <button *ngFor="let letter of alphabet" class="btn btn-outline-secondary m-1" (click)="filterByLetter(letter)"
+            [ngClass]="{'active': isSelected(letter), '': !isSelected(letter)}">
+            {{ letter }}
+        </button> -->
+        <button *ngFor="let letter of distinctFirstLetters" class="btn btn-outline-secondary m-1" (click)="filterByLetter(letter)"
+            [ngClass]="{'active': isSelected(letter), '': !isSelected(letter)}"><!-- -->
+            {{ letter }}
+        </button>
+        
+        <button class="btn btn-outline-secondary m-1" [routerLink]="['/favourite-contacts-pagination']"
+            routerLinkActive="router-link-active" (click)="filterByLetter(null)">Show All Favourite</button>
+        <button class="btn btn-outline-secondary m-1" [routerLink]="['/contacts-pagination']"
+            routerLinkActive="router-link-active" [ngClass]="{'active': !currentLetter, '': !!currentLetter}"
+            (click)="filterByLetter(null)">Show All</button>
+    </div>
+
+    <table class="table table-borderd" *ngIf="!loading">
+        <thead>
+            <tr>
+                <th>
+                    <div class="fas fa-caret-up arrowup" (click)="sortAsc()"></div>
+                    <div class="fas fa-caret-down arrowdown" (click)="sortDesc()"></div>
+                    Name
+                </th>
+                <th>Email</th>
+                <th>Phone number</th>
+                <th>Image</th>
+                <th></th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="!loading && !contacts">
+                <td colspan="6" class="text-center">No contacts found !</td>
+            </tr>
+            <tr *ngFor="let contact of contacts">
+                <td>{{contact.name}}</td>
+                <td>{{contact.email}}</td>
+                <td>{{contact.phoneNumber}}</td>
+                <td>
+                    <img *ngIf="contact.file" [src]="'data:image/jpeg;base64,' + contact.file" alt="Contact Image"
+                        width="100" height="80" style="border-radius: 50px;">
+                    <img *ngIf="!contact.file" src="assets/defaultimage.png" alt="Contact Image" width="100" height="80"
+                        style="border-radius: 50px;">
+                </td>
+                <td *ngIf="contact.favourite">
+                    <span class="mr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                            <path
+                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                        </svg>
+                    </span>
+                </td>
+                <td *ngIf="!contact.favourite"></td>
+                <td>
+                    <button class="btn btn-outline-primary rounded-pill btn-sm"
+                        (click)="updateContact(contact.contactId)">Edit</button> |
+                    <button class="btn btn-outline-primary rounded-pill btn-sm"
+                        (click)="updateContactRF(contact.contactId)">Edit RF</button> |
+                    <button class="btn btn-outline-info rounded-pill btn-sm"
+                        (click)="contactDetails(contact.contactId)">Details</button> |
+                    <button *ngIf="isAuthenticated" class="btn btn-outline-danger rounded-pill btn-sm"
+                        (click)="confirmDelete(contact.contactId)">Delete</button>
+                    <button *ngIf="!isAuthenticated" class="btn btn-outline-danger rounded-pill btn-sm"
+                        (click)="unauthorizeDelete()">Delete</button>
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div *ngIf="!loading && contacts">
+        <label for="pageSize">Page Size:</label>
+
+        <select id="pageSize" [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+            <option [ngValue]="2">2</option>
+            <option [ngValue]="4">4</option>
+            <option [ngValue]="6">6</option>
+        </select>
+
+
+        <!-- Pagination controls -->
+        <ul class="pagination">
+            <li *ngFor="let i of [].constructor(totalPages); let index = index" class="page-item"
+                [class.active]="pageNumber === index + 1">
+                <a class="page-link" style="cursor: pointer;" (click)="changePage(index + 1)">{{ index + 1 }}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>

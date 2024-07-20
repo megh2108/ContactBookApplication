@@ -1,0 +1,20 @@
+.arrowup,
+.arrowdown {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.arrowup {
+    margin-bottom: 17px;
+}
+
+.arrowdown {
+    margin-left: -10px;
+    margin-top: 0px;
+}
+
+.center{
+    width: 30%;
+    justify-content: space-between;
+}

@@ -1,0 +1,188 @@
+<div class="container ">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="text-center">Add Contact Template Form</h2>
+        </div>
+        <div class="card-body">
+            <div class="position-relative">
+                <div *ngIf="loading" class="loader-overlay">
+                    <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+                </div>
+                <!-- <div class="row justify-content-center"> -->
+                <!-- <div class="col-md-6"> -->
+                <form #addContactForm="ngForm" class="need-validation" (ngSubmit)="onSubmit(addContactForm)" novalidate>
+                    <div class="row">
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="contact.name"
+                                required minlength="3">
+                            <!-- ngModel is for the two way biding -->
+                            <!-- it is meaning that we can set value here nad it can store in that model and vice versa value from the model can get here .  -->
+
+                            <div
+                                *ngIf="addContactForm.controls['name']?.invalid && addContactForm.controls['name']?.touched">
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['name']?.errors?.['required']">
+                                    Name
+                                    is
+                                    required.</small>
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['name']?.errors?.['minlength']">Name
+                                    must be
+                                    at least 3 characters
+                                    long.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="contact.email"
+                                required email>
+                            <div
+                                *ngIf="addContactForm.controls['email']?.invalid && addContactForm.controls['email']?.touched">
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['email']?.errors?.['required']">Email is
+                                    required.</small>
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['email']?.errors?.['email']">Invalid email
+                                    format.</small>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="phoneNumber">Phone number:</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                [(ngModel)]="contact.phoneNumber" required pattern="^\+?\d{10}$">
+                            <!-- ngModel is for the two way biding -->
+                            <!-- it is meaning that we can set value here nad it can store in that model and vice versa value from the model can get here .  -->
+
+                            <div
+                                *ngIf="addContactForm.controls['phoneNumber']?.invalid && addContactForm.controls['phoneNumber']?.touched">
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['phoneNumber']?.errors?.['required']">
+                                    Phone number
+                                    is
+                                    required.</small>
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['phoneNumber']?.errors?.['pattern']">Invalid
+                                    phone number format.</small>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="company">Company name:</label>
+                            <input type="text" class="form-control" id="company" name="company"
+                                [(ngModel)]="contact.company" required minlength="5">
+                            <!-- ngModel is for the two way biding -->
+                            <!-- it is meaning that we can set value here nad it can store in that model and vice versa value from the model can get here .  -->
+
+                            <div
+                                *ngIf="addContactForm.controls['company']?.invalid && addContactForm.controls['company']?.touched">
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['company']?.errors?.['required']">
+                                    Company name
+                                    is
+                                    required.</small>
+                                <small class="text-danger"
+                                    *ngIf="addContactForm.controls['company']?.errors?.['minlength']">Company name
+                                    must be
+                                    at least 5 characters
+                                    long.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="countryId">Country:</label>
+                            <select id="countryId" name="countryId" class="form-control" [(ngModel)]="contact.countryId"
+                                (change)="onCountryChanage()" required>
+                                <option value=null>----- Select your country -----</option>
+                                <option *ngFor="let country of countries" [ngValue]="country.countryId">
+                                    {{country.countryName}}</option>
+                            </select>
+                            <div
+                                *ngIf="(addContactForm.controls['countryId']?.invalid || addContactForm.controls['countryId']?.value==null) && addContactForm.controls['countryId']?.touched">
+                                <small class="text-danger">Country is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="stateId">State:</label>
+                            <select id="stateId" name="stateId" class="form-control" [(ngModel)]="contact.stateId"
+                                required>
+                                <option value=null>----- Select your state -----</option>
+                                <option *ngFor="let state of states" [ngValue]="state.stateId">
+                                    {{state.stateName}}</option>
+                            </select>
+                            <div
+                                *ngIf="(addContactForm.controls['stateId']?.invalid || addContactForm.controls['stateId']?.value==null) && addContactForm.controls['stateId']?.touched">
+                                <small class="text-danger">State is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 ">
+                            <label class="form-label">Gender:</label>
+                            <div class="d-flex justify-content-start align-item-center">
+                                <div class="m-2">
+                                    <input type="radio" id="male" name="gender" value="M" [(ngModel)]="contact.gender"
+                                        required>
+                                    <label class="form-label" for="male">Male</label>
+                                </div>
+                                <div class="m-2">
+                                    <input type="radio" id="female" name="gender" value="F" [(ngModel)]="contact.gender"
+                                        required>
+                                    <label class="form-label" for="female">Female</label>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="addContactForm.controls['gender']?.invalid && addContactForm.controls['gender']?.touched">
+                                <small class="text-danger">Gender is required.</small>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="file">Upload Image:</label>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <input type="file" class="form-control" id="file" name="file" #imageInput
+                                    (change)="onFileChange($event)">
+                                <button *ngIf="contact.file" class="btn btn-danger" id="removeImage"
+                                    (click)="removeImage($event)"><i class="fa fa-xmark"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Display the uploaded image -->
+                        <div class="col-lg-4 mb-3" *ngIf="imageUrl">
+                            <img [src]="imageUrl" alt="Uploaded Image" class="img-thumbnail"
+                                style="max-width: 100px; max-height: 100px;">
+
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label" for="birthdate">Birthdate:</label>
+                            <input type="date" class="form-control" id="birthdate" name="birthdate"
+                                [(ngModel)]="contact.birthDate">
+                        </div>
+
+                        <div class="col-lg-4 mt-3">
+                            <div>
+                                <input type="checkbox" id="favourite" name="favourite" [(ngModel)]="contact.favourite">
+                                <label class="form-label" for="favourite">Favourite</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <button type="submit" class="btn btn-secondary add justify-content-center"
+                        [disabled]="addContactForm.invalid">Add
+                        contact</button>
+                    <a class="btn btn-secondary add justify-content-center" [routerLink]="['/contacts-pagination']"
+                        routerLinkActive="router-link-active">Back to List</a>
+                </form>
+
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+
+</div>

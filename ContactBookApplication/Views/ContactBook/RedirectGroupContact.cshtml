@@ -1,0 +1,45 @@
+﻿@model List<Contactbook>
+@{
+    int count = 1;
+}
+
+<div class="card mt-5">
+    <h4 class="card-header">Group Contact</h4>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sr No.</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Company</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr>
+                <td>@count</td>
+                <td>@contact.Name</td>
+                <td>@contact.Email</td>
+                <td>@contact.PhoneNumber</td>
+                <td>@contact.Company</td>
+                <td>
+                    <img src="@Url.Content("~/Uploads/"+@contact.FileName)" alt="Contact image" width="150" height="150" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@contact.ContactId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@contact.ContactId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@contact.ContactId">Delete</a>
+                </td>
+            </tr>
+
+            count++;
+        }
+
+    </tbody>
+</table>

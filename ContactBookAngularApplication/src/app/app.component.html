@@ -1,0 +1,96 @@
+<header>
+  <app-header></app-header>
+  <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active">Contactbook Application</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+          <li class="nav-item">
+            <a class="nav-link text-dark" [routerLink]="['/home']" routerLinkActive="router-link-active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" [routerLink]="['/privacy']" routerLinkActive="router-link-active">Privacy</a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link text-dark" [routerLink]="['/contacts-pagination']"
+              routerLinkActive="router-link-active">Contactbook Pagination</a>
+          </li>
+
+
+
+        </ul>
+        <ul class="nav navbar-nav ml-auto" *ngIf="!isAuthenticated">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/signup']" routerLinkActive="router-link-active"><span
+                class="fas fa-user"> Sign Up</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/signin']" routerLinkActive="router-link-active"><span
+                class="fas fa-sign-in-alt"> Sign In</span></a>
+          </li>
+
+        </ul>
+
+        <ul class="nav navbar-nav ml-auto" *ngIf="isAuthenticated">
+          <li class="nav-item" ngbDropdown display="dynamic">
+            <div class="d-flex align-item-center">
+              <img ngbDropdownToggle *ngIf="imagefile" [src]="'data:image/jpeg;base64,' + imagefile" alt="Contact Image"
+                class="nav-link" style="width: 50px; height: 50px; border-radius: 50%;">
+              <img ngbDropdownToggle *ngIf="!imagefile" src="assets/defaultimage.png" alt="Contact Image"
+                class="nav-link" style="width: 50px; height: 50px; border-radius: 50%;">
+
+              <a class="nav-link text-dark" [routerLink]="['/profile']" routerLinkActive="router-link-active">
+                <span ngbDropdownToggle> {{username}}
+                </span></a>
+            </div>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+
+              <a class="nav-link text-dark" [routerLink]="['/update-user',userId]" routerLinkActive="router-link-active"
+                style="cursor: pointer;" routerLinkActive="router-link-active">
+                <span>
+                  Update Profile
+                </span></a>
+
+              <a class="nav-link text-dark" [routerLink]="['/changepassword']" routerLinkActive="router-link-active"
+                style="cursor: pointer;" routerLinkActive="router-link-active">
+                <span>
+                  Change Password
+                </span></a>
+
+            
+              <a class="nav-link text-dark" (click)="signOut()" [routerLink]="['/home']"
+                routerLinkActive="router-link-active" style="cursor: pointer;" routerLinkActive="router-link-active">
+                <span>
+                  Sign out
+                </span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav> -->
+</header>
+<div class="container">
+  <main role="main" class="pb-3">
+
+    <!-- <div id="autoCloseAlert" class="alert alert-success alert-dismissible fade show">
+              <b>Success : </b>@successMessage
+              <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div> -->
+
+
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<footer class="border-top footer text-muted">
+  <div class="container">
+    &copy; 2024 - Contactbook Application - <a [routerLink]="['/privacy']"
+      routerLinkActive="router-link-active">Privacy</a>
+  </div>
+</footer>

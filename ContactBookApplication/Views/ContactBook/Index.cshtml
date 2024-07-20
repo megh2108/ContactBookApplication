@@ -1,0 +1,19 @@
+﻿@model List<Contactbook>
+
+<h2 class="text-center">Contact List</h2>
+
+<div>
+
+    <a class="btn btn-primary" asp-action="Create">Add Contact</a>
+    <a class="btn btn-primary" asp-action="ShowAllContact">Show all contact</a>
+    <a class="btn btn-primary" asp-action="ShowAllContactWithPagination">Show all contact with Pagination</a>
+</div>
+
+@for (char letter = 'A'; letter <= 'Z'; letter++)
+{
+    <div class="card mt-5">
+        <a class="card-header" asp-action="RedirectGroupContact" asp-route-letter="@letter.ToString()" style="text-decoration:none;">@letter</a>
+    </div>
+} 
+
+

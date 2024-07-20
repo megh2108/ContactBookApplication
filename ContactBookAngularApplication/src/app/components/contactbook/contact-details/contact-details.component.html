@@ -1,0 +1,117 @@
+<main id="main" class="main">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-4">
+
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                        <img *ngIf="contact.file" [src]="'data:image/jpeg;base64,' + contact.file" alt="Contact Image"
+                            class="rounded-circle">
+                        <img *ngIf="!contact.file" src="assets/defaultimage.png" alt="Contact Image"
+                            class="rounded-circle">
+                        <h2 class="mb-2">{{contact.name}}</h2>
+                        <h3 class="mb-3">{{contact.email}}</h3>
+                        <div >
+                            <button class="btn btn-outline-secondary"
+                                (click)="updateContact(contact.contactId)" style="margin: 5px;">Edit</button>
+                            <a class="btn btn-outline-secondary" [routerLink]="['/contacts-pagination']"
+                                routerLinkActive="router-link-active" style="margin: 5px;">Back to
+                                List</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-8">
+
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <div class="profile-overview" id="profile-overview">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Contact number</div>
+                                <div class="col-lg-9 col-md-8">{{contact.phoneNumber}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Company</div>
+                                <div class="col-lg-9 col-md-8">{{contact.company}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Gender</div>
+                                <div class="col-lg-9 col-md-8">{{returnGenderName(contact.gender) }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Birthdate</div>
+                                <div class="col-lg-9 col-md-8">{{contact.birthDate | date:'dd-MM-yyyy'}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Country</div>
+                                <div class="col-lg-9 col-md-8">{{contact.country.countryName}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">State</div>
+                                <div class="col-lg-9 col-md-8">{{contact.state.stateName}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Favourite</div>
+                                <div class="col-lg-9 col-md-8" *ngIf="contact.favourite">Yes</div>
+                                <div class="col-lg-9 col-md-8" *ngIf="!contact.favourite">No</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- <div class="container centered-container" >
+    <h4 class="mb-3">Contact Details</h4>
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-4">
+                    <img *ngIf="contact.file" [src]="'data:image/jpeg;base64,' + contact.file" alt="Contact Image"
+                        width="90" height="70" style="border-radius: 50px;">
+                    <img *ngIf="!contact.file" src="assets/defaultimage.png" alt="Contact Image" width="90" height="70"
+                        style="border-radius: 50px;">
+                </div>
+                <div class="col-lg-8">
+                    <h5 class="card-title">{{contact.name}}</h5>
+                    <h5 class="card-title">{{contact.phoneNumber}}</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-envelope"></i>Email: {{contact.email}}</h5>
+
+
+            <h5 class="card-title"><i class="fas fa-building"></i>Company: {{contact.company}}</h5>
+            <h5 class="card-title"><i class="fas fa-globe"></i>Country: {{contact.country.countryName}}</h5>
+            <h5 class="card-title"><i class="fas fa-map-marker-alt"></i>State: {{contact.state.stateName}}</h5>
+            <h5 class="card-title" *ngIf="contact.favourite"><i class="fas fa-star"
+                    *ngIf="contact.favourite"></i>Favourite : Yes </h5>
+            <h5 class="card-title" *ngIf="!contact.favourite"><i class="fas fa-star"
+                    *ngIf="!contact.favourite"></i>Favourite : No </h5>
+            <h5 class="card-title"><i class="fas fa-venus-mars"></i>Gender : {{returnGenderName(contact.gender) }}</h5>
+            <h5 class="card-title"><i class="fas fa-birthday-cake"></i>Birthdate : {{contact.birthDate |
+                date:'dd-MM-yyyy'}}</h5>
+        </div>
+
+
+
+    </div>
+
+
+    <a class="btn btn-secondary" [routerLink]="['/contacts-pagination']" routerLinkActive="router-link-active">Back to
+        List</a>
+
+</div> -->

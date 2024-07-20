@@ -1,0 +1,117 @@
+﻿@using ClientApiContactbookApplication.ViewModels
+@model UserDetailViewModel
+
+<h1 class="text-center">Modoify UserDetials</h1>
+<form asp-action="EditUser" enctype="multipart/form-data">
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Email" />
+    <input type="hidden" asp-for="LoginId" />
+
+
+
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+     <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ContactNumber" class="control-label"></label>
+        <input asp-for="ContactNumber" class="form-control" />
+        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+    </div>
+  
+
+
+    <div class="form-group">
+        <label asp-for="File" class="control-label"></label>
+        <input class="form-control" type="file" id="fileInput" />
+        <input asp-for="FileName" type="hidden" id="fileName" />
+        <input asp-for="File" type="hidden" id="fileContent" />
+        @if (Model.File != null)
+        {
+            var image = Convert.ToBase64String(Model.File);
+            <img src="data:image/jpeg;base64,@image" id="storedImage" alt="Contact image" width="80" height="80" style="border-radius: 50px;" />
+            <img src="" alt="" id="imagePreview" style="width: 100px; height: 100px; display: none;" />
+            <button class="btn btn-danger" id="removeImage" style="display: block;">
+                Remove
+            </button>
+
+        }
+        else
+        {
+            <img src="" alt="" id="imagePreview" style="width: 100px; height: 100px; display: none;" />
+            <button class="btn btn-danger" id="removeImage" style="display: none;">
+                Remove
+            </button>
+        }
+
+    </div>
+
+
+  
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-controller="Contactbook" asp-action="ShowAllContactWithPagination" class="btn btn-info">Cancel</a>
+    </div>
+</form>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    $(function () {
+     
+
+        $('#fileInput').change(function (e) {
+            var file = event.target.files[0];
+            if (file) {
+                var fileType = file.type; // Get the MIME type of the file
+                var fileSize = file.size; // Size in bytes
+
+                if (fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/jpg') {
+                    if (fileSize > 10240) { // 10 KB in bytes
+                        alert('File size too large! Please upload an image smaller than 10KB.');
+                        $('#fileInput').val('');
+                        return;
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var base64String = e.target.result.split(',')[1];
+                        $('#fileContent').val(base64String);
+                        $('#fileName').val(file.name);
+                        $('#imagePreview').attr('src', e.target.result).show();
+                        $('#removeImage').show();
+                        $('#storedImage').hide();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Invalid file format! Please upload an image in JPG, JPEG, or PNG format.');
+
+                }
+            }
+
+        });
+
+        $('#removeImage').click(function (e) {
+            e.preventDefault();
+            $('#fileContent').val('');
+            $('#fileName').val('');
+            $('#imagePreview').attr('src', '').hide();
+            $('#fileInput').val('');
+            $('#removeImage').hide();
+            $('#storedImage').attr('src', '').hide();
+
+        });
+    });
+
+
+</script>

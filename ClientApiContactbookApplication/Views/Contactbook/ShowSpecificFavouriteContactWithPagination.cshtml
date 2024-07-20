@@ -1,0 +1,215 @@
+﻿@using ClientApiContactbookApplication.ViewModels
+@model List<ContactbookViewModel>
+@{
+    int count = (ViewBag.CurrentPage - 1) * ViewBag.PageSize + 1;
+    var distinctLetters = ViewBag.DistinctLetters;
+
+}
+
+
+
+<h4 class="text-center">Favourite Specific Contact</h4>
+
+@* @for (char letter = 'A'; letter <= 'Z'; letter++)
+{
+    <a asp-action="ShowSpecificFavouriteContactWithPagination" asp-route-letter="@letter.ToString()" style="text-decoration:none;">
+        <button class="btn btn-outline-secondary m-1" style="margin:5px">
+            @letter
+        </button>
+    </a>
+} *@
+@foreach (var letter in distinctLetters)
+{
+    <a asp-action="ShowSpecificFavouriteContactWithPagination" asp-route-letter="@letter.ToString()" style="text-decoration:none;">
+        <button class="btn btn-outline-secondary m-1" style="margin:5px">
+            @letter
+        </button>
+    </a>
+}
+
+<a class="btn btn-outline-secondary m-1" asp-action="ShowAllFavouriteContactWithPagination">Show all favourite</a>
+<a class="btn btn-outline-secondary m-1" asp-action="ShowAllContactWithPagination">Show all</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sr No.</th>
+            <th>
+                <div class="fas fa-caret-up arrowup" onclick="sortContacts('asc')"></div>
+                <div class="fas fa-caret-down arrowdown" onclick="sortContacts('desc')"></div>
+                Name
+                </th>
+            <th>Phone Number</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count == 0)
+        {
+            <tr>
+                <td colspan="5">No favourite record found.</td>
+            </tr>
+        }
+        else
+        {
+
+            @foreach (var contact in Model)
+            {
+
+                <tr>
+                    <td>@count</td>
+                    <td>@contact.Name</td>
+                    <td>@contact.PhoneNumber</td>
+                    @if (contact.ImagePreview != null)
+                    {
+                        <td>
+                            <img src="data:image/jpeg;base64,@contact.ImagePreview" alt="Contact image" width="80" height="80" style="border-radius: 50px;" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <img src="@Url.Content("~/Uploads/defaultmaleimage.png")" alt="Contact image" width="80" height="80" style="border-radius: 50px;" />
+                        </td>
+                    }
+                    <td>
+
+                        <a asp-action="Edit" asp-route-id="@contact.ContactId" class="btn btn-info">Edit</a>
+                        <a asp-action="Details" asp-route-id="@contact.ContactId" class="btn btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@contact.ContactId" class="btn btn-info">Delete</a>
+
+                        @*    <form method="post" action="@Url.Action("DeleteConfirmed", "Contactbook")">
+                <input type="hidden" name="contactId" value="@contact.ContactId" />
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
+                </form> *@
+                    </td>
+                </tr>
+
+                count++;
+            }
+        }
+
+    </tbody>
+</table>
+
+
+
+
+@if (Model.Count == 0)
+{
+
+}
+else
+{
+    <!-- Pagination -->
+
+    <div>
+
+        <!-- Page size dropdown -->
+
+        <label for="pageSize">Page Size:</label>
+
+        <select id="pageSize" onchange="changePageSize(this)">
+
+            <option value="2">2</option>
+
+            <option value="4">4</option>
+
+            <option value="6">6</option>
+
+            <!-- Add more options as needed -->
+
+        </select>
+
+        <ul class="pagination">
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+
+            {
+
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+
+                    <a class="page-link" href="/Contactbook/ShowSpecificFavouriteContactWithPagination?page=@i&pageSize=@ViewBag.PageSize&letter=@ViewBag.Letter&sortOrder=@ViewBag.SortOrder">@i</a>
+
+                </li>
+
+            }
+
+        </ul>
+
+    </div>
+}
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var currentPageSize = @(ViewBag.PageSize); // Get current page size from ViewBag
+
+        var pageSizeDropdown = document.getElementById("pageSize");
+
+        // Set selected option based on current page size
+
+        for (var i = 0; i < pageSizeDropdown.options.length; i++) {
+
+            if (pageSizeDropdown.options[i].value === currentPageSize.toString()) {
+
+                pageSizeDropdown.selectedIndex = i;
+
+                break;
+
+            }
+
+        }
+
+    });
+
+    function changePageSize(select) {
+
+        var pageSize = select.value;
+
+        var currentPage = "@(ViewBag.CurrentPage)";
+
+        var letter = "@(ViewBag.Letter)";
+
+        var sortOrder = "@(ViewBag.SortOrder)";
+
+        window.location.href = "/Contactbook/ShowSpecificFavouriteContactWithPagination?page=" + currentPage + "&pageSize=" + pageSize + "&letter=" + letter + "&sortOrder=" + sortOrder;
+
+    }
+
+    function sortContacts(order) {
+        var currentPage = "@ViewBag.CurrentPage";
+        var pageSize = "@ViewBag.PageSize";
+        var letter = "@ViewBag.Letter";
+
+
+        window.location.href = "/Contactbook/ShowSpecificFavouriteContactWithPagination?page=" + currentPage + "&pageSize=" + pageSize + "&letter=" + letter + "&sortOrder=" + order;
+    }
+
+</script>
+
+<div>
+
+    <a class="btn btn-primary" asp-action="CreateContact">Add Contact</a>
+    @* <a class="btn btn-primary" asp-action="ShowAllContact">Show all contact</a> *@
+
+</div>
+<style>
+    .arrowup,
+    .arrowdown {
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .arrowup {
+        margin-bottom: 17px;
+    }
+
+    .arrowdown {
+        margin-left: -15px;
+        margin-top: 0px;
+    }
+</style>

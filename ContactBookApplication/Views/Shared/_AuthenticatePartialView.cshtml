@@ -1,0 +1,25 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+
+    <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Auth" asp-action="Register"><span class="fas fa-user">Sign Up</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Auth" asp-action="Login"><span class="fas fa-sign-in-alt">Sign In</span></a>
+        </li>
+
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="#"><span class="fas fa-user">@User.Identity.Name</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Auth" asp-action="Logout"><span class="fas fa-sign-in-alt">Sign Out</span></a>
+        </li>
+    </ul>
+}
+

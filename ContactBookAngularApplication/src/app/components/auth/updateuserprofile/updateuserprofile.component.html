@@ -1,0 +1,107 @@
+<div class="container">
+    <h2 class="text-center m-3">Update Contact</h2>
+    <div class="position-relative">
+        <div *ngIf="loading" class="loader-overlay">
+            <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form #updateUserForm="ngForm" class="need-validation" (ngSubmit)="onSubmit(updateUserForm)" novalidate>
+
+                    <input type="hidden" id="userId" name="userId" [(ngModel)]="userdetail.userId">
+                    <input type="hidden" id="userId" name="userId" [(ngModel)]="userdetail.userId">
+                    <input type="hidden" id="email" name="email" [(ngModel)]="userdetail.email">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="firstName">FirstName:</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName"
+                            [(ngModel)]="userdetail.firstName" required minlength="3">
+
+
+                        <div
+                            *ngIf="updateUserForm.controls['firstName']?.invalid && updateUserForm.controls['firstName']?.touched">
+                            <small class="text-danger"
+                                *ngIf="updateUserForm.controls['firstName']?.errors?.['required']">
+                                FirstName
+                                is
+                                required.</small>
+                            <small class="text-danger"
+                                *ngIf="updateUserForm.controls['firstName']?.errors?.['minlength']">FirstName
+                                must be
+                                at least 3 characters
+                                long.</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="lastName">LastName:</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName"
+                            [(ngModel)]="userdetail.lastName" required minlength="3">
+
+
+                        <div
+                            *ngIf="updateUserForm.controls['lastName']?.invalid && updateUserForm.controls['lastName']?.touched">
+                            <small class="text-danger"
+                                *ngIf="updateUserForm.controls['lastName']?.errors?.['required']">
+                                LastName
+                                is
+                                required.</small>
+                            <small class="text-danger"
+                                *ngIf="updateUserForm.controls['lastName']?.errors?.['minlength']">LastName
+                                must be
+                                at least 3 characters
+                                long.</small>
+                        </div>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label class="form-label" for="contactNumber">Phone number:</label>
+                        <input type="text" class="form-control" id="contactNumber" name="contactNumber"
+                            [(ngModel)]="userdetail.contactNumber" required pattern="^\+?\d{10}$">
+
+
+                        <div
+                            *ngIf="updateUserForm.controls['contactNumber']?.invalid && updateUserForm.controls['contactNumber']?.touched">
+                            <small class="text-danger"
+                                *ngIf="updateUserForm.controls['contactNumber']?.errors?.['required']">
+                                Contact number
+                                is
+                                required.</small>
+                            <small class="text-danger"
+                                *ngIf="updateUserForm.controls['contactNumber']?.errors?.['pattern']">Invalid
+                                Contact number format.</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="file">Upload Profile Photo:</label>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <input type="file" class="form-control" id="file" name="file" #imageInput
+                                (change)="onFileChange($event)">
+                            <button *ngIf="userdetail.file" class="btn btn-danger" id="removeImage"
+                                (click)="removeImage($event)"><i class="fa fa-xmark"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3" *ngIf="imagefile && userdetail.file">
+                        <img [src]="imagefile" alt="Uploaded Image" class="img-thumbnail"
+                            style="max-width: 100px; max-height: 100px;">
+                    </div>
+                    <div class="mb-3" *ngIf="!imagefile">
+                        <img *ngIf="userdetail.file" [src]="'data:image/jpeg;base64,' + userdetail.file"
+                            alt="Contact Image" width="100" height="100">
+                    </div>
+
+
+                    <button type="submit" class="btn btn-secondary" [disabled]="updateUserForm.invalid">Update
+                        contact</button>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

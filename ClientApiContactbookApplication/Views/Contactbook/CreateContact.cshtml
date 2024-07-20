@@ -1,0 +1,172 @@
+﻿@using ClientApiContactbookApplication.ViewModels
+@model AddContactbookViewModel
+
+<div class="container ">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="text-center">Add Contact</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="position-relative">
+                <form asp-action="CreateContact" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                        </div>
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="Company" class="control-label"></label>
+                            <input asp-for="Company" class="form-control" />
+                            <span asp-validation-for="Company" class="text-danger"></span>
+
+                        </div>
+
+
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="CountryId" class="control-label"></label>
+                            <select id="countryDropdown" asp-for="CountryId" class="form-control" asp-items="@(new SelectList(Model.CountryContactbook, "CountryId", "CountryName"))">
+                                <option value="">--Select Country--</option>
+                            </select>
+                            <span asp-validation-for="CountryId" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="StateId" class="control-label"></label>
+                            <select id="stateDropdown" asp-for="StateId" class="form-control">
+                                <option value="">--Select State--</option>
+                                @foreach (var position in Model.StateContactbook)
+                                {
+                                    <option value="@position.StateId" data-category="@position.CountryId">@position.StateName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="StateId" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="Gender" class="control-label">Gender</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" asp-for="Gender" value="M" id="genderMale" />
+                                <label class="form-check-label" for="genderMale">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" asp-for="Gender" value="F" id="genderFemale" />
+                                <label class="form-check-label" for="genderFemale">Female</label>
+                            </div>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-lg-4 mb-3"  >
+                            <label asp-for="File" class="control-label"></label>
+                            <input class="form-control" type="file" id="fileInput" />
+                            <input asp-for="FileName" type="hidden" id="fileName" />
+                            <input asp-for="File" type="hidden" id="fileContent" />
+                        </div>
+
+                        <div class="form-group col-lg-4 mb-3" id="previewDiv" style="display: none;">
+
+                            <img src="" alt="" id="imagePreview" style="width: 100px; height: 100px; display: none;" />
+                            <button class="btn btn-danger" id="removeImage" style="display: none;">
+                                <i class="fa fa-xmark"></i>
+                            </button>
+
+                        </div>
+
+
+                        <div class="form-group col-lg-4 mb-3">
+                            <label asp-for="BirthDate" class="control-label"></label>
+                            <input asp-for="BirthDate" type="date" class="form-control" />
+
+                        </div>
+
+                        <div class="form-group col-lg-4 mt-3">
+                            <label asp-for="Favourite" class="control-label"></label>
+                            <input asp-for="Favourite" type="checkbox" />
+                            <span asp-validation-for="Favourite" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <input type="submit" value="Add" class="btn btn-secondary update justify-content-center" />
+                    <a asp-action="ShowAllContactWithPagination" class="btn btn-secondary update justify-content-center">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(function () {
+        $('#countryDropdown').change(function () {
+            var countryId = $(this).val();
+            if (countryId === '') {
+                // If the empty option of the country is selected, hide all state options
+                $('#stateDropdown option').hide();
+                // Show the default empty state option
+                $('#stateDropdown').val('');
+            } else {
+                // If a country is selected, show only the states corresponding to that country
+                $('#stateDropdown option').hide();
+                $('#stateDropdown option[data-category="' + countryId + '"]').show();
+            }
+            $('#stateDropdown').val('');
+
+        });
+
+        $('#fileInput').change(function (e) {
+            var file = event.target.files[0];
+            if (file) {
+                var fileType = file.type;
+                if (fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/jpg') {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var base64String = e.target.result.split(',')[1];
+                        $('#fileContent').val(base64String);
+                        $('#fileName').val(file.name);
+                        $('#previewDiv').show();
+                        $('#imagePreview').attr('src', e.target.result).show();
+                        $('#removeImage').show();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Invalid file format! Please upload an image in JPG, JPEG, or PNG format.');
+
+                }
+            }
+
+
+        });
+
+        $('#removeImage').click(function (e) {
+            e.preventDefault();
+            $('#fileContent').val('');
+            $('#fileName').val('');
+            $('#previewDiv').hide();
+            $('#imagePreview').attr('src', '').hide();
+            $('#fileInput').val('');
+            $('#removeImage').hide();
+
+        });
+    });
+
+
+</script>

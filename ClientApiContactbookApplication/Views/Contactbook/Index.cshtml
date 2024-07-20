@@ -1,0 +1,90 @@
+﻿@using ClientApiContactbookApplication.ViewModels
+@model List<ContactbookViewModel>
+
+<h2 class="text-center mt-4">Contact List</h2>
+
+<div class="alphabet-links text-center my-4">
+    @for (char letter = 'A'; letter <= 'Z'; letter++)
+    {
+        <a asp-action="ShowSpecificContactWithPagination" asp-route-letter="@letter.ToString()" class="btn btn-outline-info mx-1 my-1">
+            @letter
+        </a>
+    }
+</div>
+
+<div class="additional-actions text-center my-3">
+    <a class="btn btn-outline-info mx-1" asp-action="ShowAllContactWithPagination">Show all contacts</a>
+    <a class="btn btn-outline-info mx-1" asp-action="ShowAllFavouriteContactWithPagination">Show all favourite contacts</a>
+    <a class="btn btn-primary mx-1" asp-action="CreateContact">Add Contact</a>
+</div>
+
+
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #333;
+    font-weight: bold;
+}
+
+.alphabet-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.alphabet-links .btn {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.additional-actions .btn {
+    margin: 5px;
+    padding: 10px 20px;
+}
+
+.additional-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+   
+}
+
+</style>
+
+
+@* @using ClientApiContactbookApplication.ViewModels
+@model List<ContactbookViewModel>
+
+<h2 class="text-center">Contact List</h2>
+
+
+
+@for (char letter = 'A'; letter <= 'Z'; letter++)
+{
+    <a asp-action="ShowSpecificContactWithPagination" asp-route-letter="@letter.ToString()" style="text-decoration:none;margin:10px;margin-top:50px">
+       <button class="btn btn-outline-info" style="margin:5px">
+            @letter
+        </button>
+    </a>
+}
+<a class="btn btn-outline-info" asp-action="ShowAllContactWithPagination">Show all contact </a>
+<a class="btn btn-outline-info" asp-action="ShowAllFavouriteContactWithPagination">Show all favourite contact </a>
+
+
+<div>
+
+    <a class="btn btn-primary" asp-action="CreateContact">Add Contact</a>
+    @* <a class="btn btn-primary" asp-action="ShowAllContact">Show all contact</a> *@
+
+@*</div> *@

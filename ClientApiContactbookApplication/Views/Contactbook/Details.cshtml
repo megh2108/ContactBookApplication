@@ -1,0 +1,169 @@
+﻿@using ClientApiContactbookApplication.ViewModels
+@model ContactbookViewModel
+
+<main id="main" class="main">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-4">
+
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                        @*  <img *ngIf="contact.file" [src]="'data:image/jpeg;base64,' + contact.file" alt="Contact Image"
+                        class="rounded-circle">
+                        <img *ngIf="!contact.file" src="assets/defaultimage.png" alt="Contact Image"
+                        class="rounded-circle"> *@
+                        @if (Model.ImagePreview != null)
+                        {
+                            <td>
+                                <img src="data:image/jpeg;base64,@Model.ImagePreview" alt="Contact image" class="rounded-circle" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <img src="@Url.Content("~/Uploads/defaultmaleimage.png")" alt="Contact image" class="rounded-circle" />
+                            </td>
+                        }
+                        <h2 class="mb-2">@Model.Name</h2>
+                        <h3 class="mb-3">@Model.Email</h3>
+                        <div>
+                           
+                            <a asp-action="Edit" asp-route-id="@Model.ContactId" class="btn btn-outline-secondary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@Model.ContactId" class="btn btn-outline-secondary">Delete</a>
+                            <a asp-action="ShowAllContactWithPagination" class="btn btn-outline-secondary">Back to list</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-8">
+
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <div class="profile-overview" id="profile-overview">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Contact number</div>
+                                <div class="col-lg-9 col-md-8">@Model.PhoneNumber</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Company</div>
+                                <div class="col-lg-9 col-md-8">@Model.Company</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Gender</div>
+                                @if (@Model.Gender == "M")
+                                {
+                                    <div class="col-lg-9 col-md-8">Male</div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-9 col-md-8">
+                                        Female
+                                    </div>
+
+                                }
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Birthdate</div>
+                                <div class="col-lg-9 col-md-8">@Model.BirthDate</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Country</div>
+                                <div class="col-lg-9 col-md-8">@Model.Country.CountryName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">State</div>
+                                <div class="col-lg-9 col-md-8">@Model.State.StateName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Favourite</div>
+                                @if (@Model.Favourite)
+                                {
+                                    <div class="col-lg-9 col-md-8">Yes</div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-9 col-md-8">
+                                        No
+                                    </div>
+
+                                }
+                              
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+<style>
+    #main {
+        margin-top: 60px;
+        padding: 20px 30px;
+        transition: all 0.3s;
+    }
+
+
+    .profile .profile-card img {
+        max-width: 120px;
+    }
+
+    .profile .profile-card h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2c384e;
+        margin: 10px 0 0 0;
+    }
+
+    .profile .profile-card h3 {
+        font-size: 18px;
+    }
+
+    .profile .profile-card .social-links a {
+        font-size: 20px;
+        display: inline-block;
+        color: rgba(1, 41, 112, 0.5);
+        line-height: 0;
+        margin-right: 10px;
+        transition: 0.3s;
+    }
+
+        .profile .profile-card .social-links a:hover {
+            color: #012970;
+        }
+
+    .profile .profile-overview .row {
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+
+    .profile .profile-overview .card-title {
+        color: #012970;
+    }
+
+    .profile .profile-overview .label {
+        font-weight: 600;
+        color: rgba(1, 41, 112, 0.6);
+    }
+
+    .profile .profile-edit label {
+        font-weight: 600;
+        color: rgba(1, 41, 112, 0.6);
+    }
+
+    .profile .profile-edit img {
+        max-width: 120px;
+    }
+
+</style>                          
